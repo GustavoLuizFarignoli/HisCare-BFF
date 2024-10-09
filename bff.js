@@ -8,138 +8,140 @@ const app = express();
 // Middleware
 app.use(bodyParser.json());
 
-
 // Create
 app.post('/microservico/', (req, res) => {
     const url = 'https://jsonplaceholder.typicode.com/posts'; // URL do micro serviço no container apps
 
     // Fazer a requisição HTTP POST
-    axios.post(url, req)
+    axios.post(url, req.body)
       .then(response => {
-        // Exibe os dados da resposta (response)
-        res = response.data;
+        // Envia os dados da resposta (response) para o cliente
+        res.json(response.data);
       })
       .catch(error => {
         // Lida com erros de requisição
-        res = error.message;
+        res.status(500).send(error.message);
       });
-      return res;
 });
+
 app.post('/function/', (req, res) => {
     const url = 'https://crudgustavo.azurewebsites.net/api/inserirpessoa'; // URL da func
 
     // Fazer a requisição HTTP POST
-    axios.post(url, req)
+    axios.post(url, req.body)
       .then(response => {
-        // Exibe os dados da resposta (response)
-        res = response.data;
+        // Envia os dados da resposta (response) para o cliente
+        res.json(response.data);
       })
       .catch(error => {
         // Lida com erros de requisição
-        res = error.message;
+        res.status(500).send(error.message);
       });
-      return res;
 });
 
-//Read
+// Read All
 app.get('/microservico/', (req, res) => {
+    const id = req.query.id; //Obtém o id da query string
     const url = 'https://jsonplaceholder.typicode.com/posts'; // URL do micro serviço no container apps
+
+    if (id) {
+      url = ``;
+    }
 
     axios.get(url)
     .then(response => {
-      // Imprimir os dados da resposta (response)
-      res = response.data;
+      // Envia os dados da resposta (response) para o cliente
+      res.json(response.data);
     })
     .catch(error => {
       // Lida com erros da requisição
-      res = error.message;
+      res.status(500).send(error.message);
     });
-    return res;
-    
 });
 
 app.get('/function/', (req, res) => {
-    const url = 'https://crudgustavo.azurewebsites.net/api/pesquisarpessoas'; // URL do micro serviço no container apps
+  const crm = req.query.crm; // Obtém o crm da query string
+  let url = 'https://crudgustavo.azurewebsites.net/api/pesquisarpessoas'; // URL da função
 
-    axios.get(url)
+  // Se o crm for fornecido, alteramos a URL para buscar o médico específico
+  if (crm) {
+      url = `https://crudgustavo.azurewebsites.net/api/pesquisarpessoa?crm=${crm}`;
+  }
+
+  // Fazer a requisição HTTP GET
+  axios.get(url)
     .then(response => {
-      // Imprimir os dados da resposta (response)
-      res = response.data;
+      // Exibe os dados da resposta (response)
+      res.status(response.status).send(response.data);
     })
     .catch(error => {
-      // Lida com erros da requisição
-      res = error.message;
+      // Lida com erros de requisição
+      res.status(error.response ? error.response.status : 500).send(error.message);
     });
-    return res;
-    
 });
 
-//Update
-app.get('/microservico/', (req, res) => {
+// Update
+app.put('/microservico/', (req, res) => {
   const url = ''; // URL do micro serviço no container apps
 
   // Fazer a requisição HTTP PUT para atualizar o recurso
-  axios.put(url, req)
+  axios.put(url, req.body)
   .then(response => {
-    // Imprimir os dados da resposta (response)
-    res = response.data;
+    // Envia os dados da resposta (response) para o cliente
+    res.json(response.data);
   })
   .catch(error => {
     // Lidar com erros de requisição
-    res = error.message;
+    res.status(500).send(error.message);
   });
-  
 });
 
-app.get('/function/', (req, res) => {
+app.put('/function/', (req, res) => {
   const url = 'https://crudgustavo.azurewebsites.net/api/editarpessoa'; // URL do micro serviço no container apps
 
   // Fazer a requisição HTTP PUT para atualizar o recurso
-  axios.put(url, req)
+  axios.put(url, req.body)
   .then(response => {
-    // Imprimir os dados da resposta (response)
-    res = response.data;
+    // Envia os dados da resposta (response) para o cliente
+    res.json(response.data);
   })
   .catch(error => {
     // Lidar com erros de requisição
-    res = error.message;
+    res.status(500).send(error.message);
   });
-  
 });
 
-//Delete
-app.get('/microservico/', (req, res) => {
+// Delete
+app.delete('/microservico/', (req, res) => {
   const url = ''; // URL do micro serviço no container apps
 
-  // Fazer a requisição HTTP PUT para atualizar o recurso
-  axios.delete(url, req)
+  // Fazer a requisição HTTP DELETE para excluir o recurso
+  axios.delete(url, { data: req.body })
   .then(response => {
-    // Imprimir os dados da resposta (response)
-    res = response.data;
+    // Envia os dados da resposta (response) para o cliente
+    res.json(response.data);
   })
   .catch(error => {
     // Lidar com erros de requisição
-    res = error.message;
+    res.status(500).send(error.message);
   });
-  
 });
 
-app.get('/function/', (req, res) => {
-  const url = 'https://crudgustavo.azurewebsites.net/api/excluirpessoa'; // URL do micro serviço no container apps
+app.delete('/function/', (req, res) => {
+  const crm = req.query.crm; // Obtém o crm da query string
+  const url = `https://crudgustavo.azurewebsites.net/api/excluirpessoa?crm=${crm}`; // Adiciona o crm na URL
 
-  // Fazer a requisição HTTP PUT para atualizar o recurso
-  axios.delete(url, req)
-  .then(response => {
-    // Imprimir os dados da resposta (response)
-    res = response.data;
-  })
-  .catch(error => {
-    // Lidar com erros de requisição
-    res = error.message;
-  });
-  
+  // Fazer a requisição HTTP DELETE
+  axios.delete(url)
+    .then(response => {
+      // Exibe os dados da resposta (response)
+      res.status(response.status).send(response.data);
+    })
+    .catch(error => {
+      // Lida com erros de requisição
+      res.status(error.response ? error.response.status : 500).send(error.message);
+    });
 });
-
 
 // Iniciando o servidor
 const PORT = 3000;
