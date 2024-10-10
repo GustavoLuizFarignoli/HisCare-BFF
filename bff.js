@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 
 // Create
 app.post('/microservico/', (req, res) => {
-    const url = 'https://jsonplaceholder.typicode.com/posts'; // URL do micro serviço no container apps
+    const url = 'https://hiscaredev.happyplant-544fa1ec.eastus.azurecontainerapps.io/users/'; // URL do micro serviço no container apps
 
     // Fazer a requisição HTTP POST
     axios.post(url, req.body)
@@ -42,10 +42,10 @@ app.post('/function/', (req, res) => {
 // Read All
 app.get('/microservico/', (req, res) => {
     const id = req.query.id; //Obtém o id da query string
-    const url = 'https://jsonplaceholder.typicode.com/posts'; // URL do micro serviço no container apps
+    const url = 'https://hiscaredev.happyplant-544fa1ec.eastus.azurecontainerapps.io/users/'; // URL do micro serviço no container apps
 
     if (id) {
-      url = ``;
+      url = `https://hiscaredev.happyplant-544fa1ec.eastus.azurecontainerapps.io/users/${id}`;
     }
 
     axios.get(url)
@@ -82,7 +82,8 @@ app.get('/function/', (req, res) => {
 
 // Update
 app.put('/microservico/', (req, res) => {
-  const url = ''; // URL do micro serviço no container apps
+  const crm = req.query.crm;
+  const url = `https://hiscaredev.happyplant-544fa1ec.eastus.azurecontainerapps.io/users/${crm}`; // URL do micro serviço no container apps
 
   // Fazer a requisição HTTP PUT para atualizar o recurso
   axios.put(url, req.body)
@@ -113,7 +114,8 @@ app.put('/function/', (req, res) => {
 
 // Delete
 app.delete('/microservico/', (req, res) => {
-  const url = ''; // URL do micro serviço no container apps
+  const crm = req.query.crm; // Obtém o crm da query string
+  const url = `https://hiscaredev.happyplant-544fa1ec.eastus.azurecontainerapps.io/users/${crm}`; // URL do micro serviço no container apps
 
   // Fazer a requisição HTTP DELETE para excluir o recurso
   axios.delete(url, { data: req.body })
