@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 
 // Create
 app.post('/microservico/', (req, res) => {
-    const url = 'https://hiscaredev.happyplant-544fa1ec.eastus.azurecontainerapps.io/users/'; // URL do micro serviço no container apps
+    const url = 'https://hiscare-ms-clean.jollyforest-3aeb51ab.eastus.azurecontainerapps.io/users'; // URL do micro serviço no container apps
 
     // Fazer a requisição HTTP POST
     axios.post(url, req.body)
@@ -41,11 +41,11 @@ app.post('/function/', (req, res) => {
 
 // Read All
 app.get('/microservico/', (req, res) => {
-    const id = req.query.id; //Obtém o id da query string
-    const url = 'https://hiscaredev.happyplant-544fa1ec.eastus.azurecontainerapps.io/users/'; // URL do micro serviço no container apps
+    let id = req.query.id; //Obtém o id da query string
+    let url = 'https://hiscare-ms-clean.jollyforest-3aeb51ab.eastus.azurecontainerapps.io/users'; // URL do micro serviço no container apps
 
     if (id) {
-      url = `https://hiscaredev.happyplant-544fa1ec.eastus.azurecontainerapps.io/users/${id}`;
+      url = `https://hiscare-ms-clean.jollyforest-3aeb51ab.eastus.azurecontainerapps.io/users/?id=${id}`
     }
 
     axios.get(url)
@@ -81,20 +81,19 @@ app.get('/function/', (req, res) => {
 });
 
 // Update
-app.put('/microservico/', (req, res) => {
-  const crm = req.query.crm;
-  const url = `https://hiscaredev.happyplant-544fa1ec.eastus.azurecontainerapps.io/users/${crm}`; // URL do micro serviço no container apps
+app.put('/microservico/:id', (req, res) => {
+  const id = req.params.id;
+  const url = `https://hiscare-ms-clean.jollyforest-3aeb51ab.eastus.azurecontainerapps.io/users/${id}`; // URL do micro serviço no container apps
 
   // Fazer a requisição HTTP PUT para atualizar o recurso
   axios.put(url, req.body)
-  .then(response => {
-    // Envia os dados da resposta (response) para o cliente
-    res.json(response.data);
-  })
-  .catch(error => {
-    // Lidar com erros de requisição
-    res.status(500).send(error.message);
-  });
+    .then(response => {
+      res.json(response.data);
+    })
+    .catch(error => {
+      // Lidar com erros de requisição
+      res.status(500).send(error.message);
+    });
 });
 
 app.put('/function/', (req, res) => {
@@ -114,8 +113,8 @@ app.put('/function/', (req, res) => {
 
 // Delete
 app.delete('/microservico/', (req, res) => {
-  const crm = req.query.crm; // Obtém o crm da query string
-  const url = `https://hiscaredev.happyplant-544fa1ec.eastus.azurecontainerapps.io/users/${crm}`; // URL do micro serviço no container apps
+  const id = req.query.id; // Obtém o crm da query string
+  const url = `https://hiscare-ms-clean.jollyforest-3aeb51ab.eastus.azurecontainerapps.io/users/?id=${id}`; // URL do micro serviço no container apps
 
   // Fazer a requisição HTTP DELETE para excluir o recurso
   axios.delete(url, { data: req.body })
