@@ -6,8 +6,7 @@ WORKDIR /app
 
 # Copiando os arquivos para usar eles no dockerhub
 COPY package*.json ./
-COPY models/User.js ./
-COPY mongoapp.js ./
+COPY bff.js ./
 
 # Instalando as dependências do Node.js
 RUN npm install
@@ -19,5 +18,5 @@ COPY . .
 EXPOSE 3000
 
 # Comando para rodar a aplicação
-CMD ["node", "mongoapp.js"]
+CMD ["node", "bff.js"]
 
