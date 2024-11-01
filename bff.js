@@ -119,7 +119,22 @@ app.delete('/function/', (req, res) => {
     });
 });
 
-const PORT = 3000;
+app.post('/sendCrm/', (req, res) => {
+
+  const url = 'http://localhost:3000/sendCrm'; 
+
+  axios.post(url, req.body)
+      .then(response => {
+          res.json(response.data);
+          console.log(response.data);
+      })
+      .catch(error => {
+          res.status(500).send(error.message);
+          console.log(error.message);
+      });
+});
+
+const PORT = 3001;
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
 });
