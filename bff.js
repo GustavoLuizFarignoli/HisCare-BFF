@@ -8,7 +8,7 @@ app.use(bodyParser.json());
 
 // Create
 app.post('/microservico/', (req, res) => {
-    const url = 'https://hiscare-ms-clean.jollyforest-3aeb51ab.eastus.azurecontainerapps.io/users'; 
+    const url = 'https://hiscare-ms-clean.salmonsand-d9d9504c.eastus.azurecontainerapps.io/users'; 
 
     axios.post(url, req.body)
       .then(response => {
@@ -34,10 +34,10 @@ app.post('/function/', (req, res) => {
 // Read All and ID
 app.get('/microservico/:id?', (req, res) => {
     const { id } = req.params; 
-    let url = 'https://hiscare-ms-clean.jollyforest-3aeb51ab.eastus.azurecontainerapps.io/users'; 
+    let url = 'https://hiscare-ms-clean.salmonsand-d9d9504c.eastus.azurecontainerapps.io/users'; 
 
     if (id) {
-      url = `https://hiscare-ms-clean.jollyforest-3aeb51ab.eastus.azurecontainerapps.io/users/${id}`
+      url = `https://hiscare-ms-clean.salmonsand-d9d9504c.eastus.azurecontainerapps.io/users/${id}`
     }
 
     axios.get(url)
@@ -69,7 +69,7 @@ app.get('/function/', (req, res) => {
 // Update
 app.put('/microservico/:id', (req, res) => {
   const id = req.params.id;
-  const url = `https://hiscare-ms-clean.jollyforest-3aeb51ab.eastus.azurecontainerapps.io/users/${id}`;
+  const url = `https://hiscare-ms-clean.salmonsand-d9d9504c.eastus.azurecontainerapps.io/users/${id}`;
 
   axios.put(url, req.body)
     .then(response => {
@@ -95,7 +95,7 @@ app.put('/function/', (req, res) => {
 // Delete
 app.delete('/microservico/:id', (req, res) => {
   const { id } = req.params;
-  const url = `https://hiscare-ms-clean.jollyforest-3aeb51ab.eastus.azurecontainerapps.io/users/${id}`; 
+  const url = `https://hiscare-ms-clean.salmonsand-d9d9504c.eastus.azurecontainerapps.io/users/${id}`; 
 
   axios.delete(url)
   .then(response => {
@@ -121,7 +121,7 @@ app.delete('/function/', (req, res) => {
 
 app.post('/sendCrm/', (req, res) => {
 
-  const url = 'http://localhost:3000/sendCrm'; 
+  const url = 'https://hiscare-ms-clean.salmonsand-d9d9504c.eastus.azurecontainerapps.io/sendCrm'; 
 
   axios.post(url, req.body)
       .then(response => {
@@ -134,7 +134,7 @@ app.post('/sendCrm/', (req, res) => {
       });
 });
 
-const PORT = 3001;
+const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
 });
